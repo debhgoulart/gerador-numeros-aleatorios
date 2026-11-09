@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<f:metadata>
+    <f:viewParam name="id" value="#{numeroBean.idParam}" />
+    <f:event type="preRenderView" listener="#{numeroBean.inicializarResultado}" />
+</f:metadata>
+
+<h:head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resultado da Geração - Gerador de Números</title>
+    <h:outputStylesheet library="css" name="style.css" />
+</h:head>
+
+<h:body>
+    <div class="container">
+        <div class="card">
+            <header class="header">
+                <h1>Número Gerado com Sucesso!</h1>
+                <p>O registro foi persistido no banco de dados relacional via JPA.</p>
+            </header>
+
+            <div class="messages-container">
+                <h:messages globalOnly="true"
+                            showSummary="true"
+                            showDetail="true"
+                            errorClass="messages-error"
+                            infoClass="messages-info" />
+            </div>
+
+            <!-- Painel com os dados do resultado -->
+            <h:panelGroup layout="block" rendered="#{numeroBean.numeroGerado != null}">
+                <div class="result-box">
+                    <div class="label">Número Aleatório Gerado</div>
+                    <div class="number">#{numeroBean.numeroGerado.numeroAleatorio}</div>
+
+                    <div class="result-meta">
+                        <div class="result-meta-item">
+                            <div class="meta-label">Valor Máximo Informado</div>
+                            <div class="meta-value">#{numeroBean.numeroGerado.valorMaximo}</div>
+                        </div>
+
+                        <div class="result-meta-item">
+                            <div class="meta-label">Data e Hora da Geração</div>
+                            <div class="meta-value">
+                                <h:outputText value="#{numeroBean.numeroGerado.dataGeracao}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo" />
+                                </h:outputText>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:panelGroup>
+
+            <!-- Caso nao haja registro em contexto -->
+            <h:panelGroup layout="block" rendered="#{numeroBean.numeroGerado == null}" styleClass="empty-state">
+                <p>Nenhum resultado disponível para exibição no momento.</p>
+            </h:panelGroup>
+
+            <h:form id="formResultado">
+                <div class="btn-group">
+                    <h:commandButton value="Gerar Outro Número"
+                                     action="#{numeroBean.novo}"
+                                     styleClass="btn btn-primary" />
+
+                    <h:commandButton value="Ver Histórico Completo"
+                                     action="#{numeroBean.verHistorico}"
+                                     styleClass="btn btn-secondary" />
+                </div>
+            </h:form>
+        </div>
+
+        <footer class="footer">
+            Aplicação Java Web | JSF 2.3 • JPA 2.2 • Hibernate • Servlet Filter
+        </footer>
+    </div>
+</h:body>
+</html>

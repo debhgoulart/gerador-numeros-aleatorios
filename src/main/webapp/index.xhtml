@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerador de Números Aleatórios</title>
+    <h:outputStylesheet library="css" name="style.css" />
+</h:head>
+
+<h:body>
+    <div class="container">
+        <div class="card">
+            <header class="header">
+                <h1>Gerador de Números Aleatórios</h1>
+                <p>Informe um valor numérico limite para gerar um número aleatório entre zero e o limite definido.</p>
+            </header>
+
+            <div class="messages-container">
+                <h:messages globalOnly="false"
+                            showSummary="true"
+                            showDetail="true"
+                            errorClass="messages-error"
+                            infoClass="messages-info" />
+            </div>
+
+            <!-- Formulario de entrada -->
+            <h:form id="formGerador">
+                <div class="form-group">
+                    <h:outputLabel for="valorMaximo" value="Valor Máximo Permitido (>= 0):" />
+                    <h:inputText id="valorMaximo"
+                                 value="#{numeroBean.valorMaximo}"
+                                 required="true"
+                                 requiredMessage="O valor máximo é obrigatório."
+                                 converterMessage="Por favor, informe um número inteiro válido."
+                                 styleClass="form-control">
+                        <f:convertNumber integerOnly="true" />
+                        <f:validateLongRange minimum="0" />
+                    </h:inputText>
+                    <small class="form-help">O número gerado estará no intervalo entre 0 e o valor informado (inclusivo).</small>
+                </div>
+
+                <div class="btn-group">
+                    <h:commandButton value="Gerar Número Aleatório"
+                                     action="#{numeroBean.gerar}"
+                                     styleClass="btn btn-primary" />
+
+                    <h:commandButton value="Consultar Histórico"
+                                     action="#{numeroBean.verHistorico}"
+                                     immediate="true"
+                                     styleClass="btn btn-secondary" />
+                </div>
+            </h:form>
+        </div>
+
+        <footer class="footer">
+            Aplicação Java Web | JSF 2.3 • JPA 2.2 • Hibernate • Servlet Filter
+        </footer>
+    </div>
+</h:body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<f:metadata>
+    <f:event type="preRenderView" listener="#{numeroBean.carregarHistorico}" />
+</f:metadata>
+
+<h:head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Histórico de Números Gerados</title>
+    <h:outputStylesheet library="css" name="style.css" />
+</h:head>
+
+<h:body>
+    <div class="container container-large">
+        <div class="card">
+            <header class="header">
+                <h1>Histórico de Números Gerados</h1>
+                <p>Todos os registros consultados diretamente do banco de dados relacional via JPA.</p>
+            </header>
+
+            <div class="messages-container">
+                <h:messages globalOnly="true"
+                            showSummary="true"
+                            showDetail="true"
+                            errorClass="messages-error"
+                            infoClass="messages-info" />
+            </div>
+
+            <!-- Tabela com historico de geracao -->
+            <h:panelGroup layout="block" rendered="#{not empty numeroBean.historico}">
+                <div class="table-responsive">
+                    <h:dataTable value="#{numeroBean.historico}"
+                                 var="item"
+                                 styleClass="table-custom">
+                        <h:column>
+                            <f:facet name="header">ID</f:facet>
+                            <h:outputText value="##{item.id}" />
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Valor Máximo</f:facet>
+                            <h:outputText value="#{item.valorMaximo}" />
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Número Aleatório</f:facet>
+                            <strong><h:outputText value="#{item.numeroAleatorio}" /></strong>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Data e Horário</f:facet>
+                            <h:outputText value="#{item.dataGeracao}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo" />
+                            </h:outputText>
+                        </h:column>
+                    </h:dataTable>
+                </div>
+            </h:panelGroup>
+
+            <h:panelGroup layout="block" rendered="#{empty numeroBean.historico}" styleClass="empty-state">
+                <p>Nenhum registro encontrado no banco de dados.</p>
+            </h:panelGroup>
+
+            <h:form id="formHistorico">
+                <div class="btn-group">
+                    <h:commandButton value="Gerar Novo Número"
+                                     action="#{numeroBean.novo}"
+                                     styleClass="btn btn-primary" />
+                </div>
+            </h:form>
+        </div>
+
+        <footer class="footer">
+            Aplicação Java Web | JSF 2.3 • JPA 2.2 • Hibernate • Servlet Filter
+        </footer>
+    </div>
+</h:body>
+</html>
